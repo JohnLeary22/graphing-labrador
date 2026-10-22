@@ -7,7 +7,7 @@ import { equipItem, resetAppearance, setCharacter } from '@/services/persistence
 import { CATEGORY_LABEL, slotOf } from './Shop'
 import type { CharacterId, Equipped } from '@/types'
 
-const SLOTS: (keyof Equipped)[] = ['hat', 'neckwear', 'eyewear', 'colour', 'background']
+const SLOTS: (keyof Equipped)[] = ['hat', 'neckwear', 'eyewear', 'background']
 
 export function Kennel() {
   const me = useStudent()

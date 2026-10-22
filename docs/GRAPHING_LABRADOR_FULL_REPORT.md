@@ -138,7 +138,7 @@ docs/           this report
 | Slope Lab lesson | `#/student/lesson/gradient` | The 11-question lesson (section 6) |
 | My Progress | `#/student/progress` | Level, XP, coins earned and spent, skill messages, released teacher feedback |
 | My Kennel | `#/student/kennel` | Choose an unlocked character and equip owned cosmetics, reset appearance |
-| Reward Shop | `#/student/shop` | 18 cosmetics, filter by category, confirm purchase, insufficient-funds and owned states, purchase history |
+| Reward Shop | `#/student/shop` | 64 cosmetics (All view sorted by price), filter by category, confirm purchase, insufficient-funds and owned states, purchase history |
 | Leaderboard | `#/student/leaderboard` | Class ranked by XP using display names; hidden if the teacher turns it off |
 
 ### Teacher portal
@@ -358,18 +358,19 @@ Worked totals: correct first time is 10 coins and 5 XP; wrong then correct is 8 
 
 ### Shop
 
-Eighteen cosmetic items. The shop never sells learning content.
+Sixty-four cosmetic items: 15 each of headwear, neckwear, eyewear and backgrounds, plus four characters. The shop never sells learning content. Coat colours were removed (any purchased earlier are refunded automatically, once, and unequipped).
 
-| Category | Items | Price range |
-| --- | --- | --- |
-| Headwear | Navy Beanie, Lab Cap, Study Headphones, Gradient Crown | 40 to 300 |
-| Neckwear | Grid Bandana, Bow Tie, Teal Scarf | 25 to 60 |
-| Eyewear | Round Glasses, Sunny Shades | 55 to 110 |
-| Coat colours | Chocolate Coat, Black Coat | 90 |
-| Backgrounds | Graph Paper, Sunset Quadrants, Midnight Lab | 20 to 130 |
-| Characters | Axis (Axel), Slope (Slobber), Vertex (Tex), Curve (Kirby) | 150 to 200 |
+Each of the four categories has the same spread of rarity: 5 common, 4 uncommon, 3 rare, 2 epic and 1 legendary. The legendary item in each category is animated (a floating, glowing halo; twinkling stardust collar; sparkling galaxy lenses; a slowly turning cosmos background). Animation stops when the device asks for reduced motion.
 
-Rarities: common, uncommon, rare, epic. Purchases check ownership and balance, ask for confirmation and are recorded in a purchase history. A one-time item cannot be bought twice. Equipped items persist and show elsewhere in the website.
+| Category | Common (5) | Uncommon (4) | Rare (3) | Epic (2) | Legendary (1) |
+| --- | --- | --- | --- | --- | --- |
+| Headwear | Red Headband, Bucket Hat, Party Hat, Navy Beanie, Flat Cap | Beret, Lab Cap, Chef Hat, Cowboy Hat | Study Headphones, Wizard Hat, Pirate Hat | Gradient Crown, Viking Helmet | Golden Halo |
+| Neckwear | Pink Ribbon, Grid Bandana, Jingle Bell, Blue Necktie, Bow Tie | Flower Collar, Teal Scarf, Striped Scarf, Star Medal | Flower Lei, Hero Cape, Pearl Necklace | Gold Chain, Amethyst Pendant | Stardust Collar |
+| Eyewear | Eye Patch, Heart Glasses, Square Frames, Sports Visor, Round Glasses | Monocle, Aviators, 3D Glasses, Lab Goggles | Sunny Shades, Neon Frames, Steampunk Specs | Hologram Visor, Diamond Specs | Galaxy Lenses |
+| Backgrounds | Graph Paper, Blue Sky, Mint Hills, Sandy Dunes, Plotted Points | Blueprint, Green Forest, Sunset Quadrants, Ocean Waves | Midnight Lab, Aurora, City Lights | Volcano, Deep Space | Living Cosmos |
+| Characters | | | Axis (Axel), Slope (Slobber) | Vertex (Tex), Curve (Kirby) | |
+
+Prices run from 20 coins (cheapest background) to 900 coins (Living Cosmos). Legendaries cost 750 to 900 coins. The shop's All view lists every item from the lowest price to the highest. Purchases check ownership and balance, ask for confirmation and are recorded in a purchase history. A one-time item cannot be bought twice. Equipped items persist and show on the dashboard, sidebar and lab pages. Hats, glasses and neckwear are scaled to each dog's own head and neck.
 
 ### Leaderboard
 
@@ -627,3 +628,7 @@ Each keeps its name, accent colour and mathematical collar badge. The shop coat-
 | fitcional | Landing-page demonstration disclaimer | No: one isolated sentence written by the project owner | Retained as requested earlier. It can be changed in `src/data/copy.ts` |
 
 No other misspellings were found in the interface, lesson data, question bank, feedback messages, rubric, marking pages, rewards text, navigation or the seeded classmates' responses.
+
+## 24. Later change: shop expansion
+
+Coat colours were removed. Headwear, neckwear, eyewear and backgrounds now each have 15 items with a 5 / 4 / 3 / 2 / 1 split across common, uncommon, rare, epic and legendary, and each category's legendary is animated. The All view is sorted by price. Artwork is in `src/components/mascots/cosmetics.tsx`, the catalogue in `src/data/curriculum/shop.ts`, animation in `src/styles/index.css`, and the saved-data upgrade (refund and unequip of removed coat colours) in `src/services/persistence/store.ts`. Tests are in `tests/unit/shop.test.tsx`.

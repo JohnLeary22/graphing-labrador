@@ -20,7 +20,7 @@ Not yet run: Playwright e2e tests, automated accessibility audit, screen-reader 
 - Demo mode with Demo Student and Demo Teacher entry points and a visible role switch; reset button.
 - Layered SVG Labrador component (five characters with a distinct maths motif, 3 expressions, coat colours, 4 hats, 3 neckwear, 2 eyewear, 3 backgrounds).
 - Interactive SVG graph engine: coordinate mapping, drag (pointer/touch), keyboard arrow-key movement, snapping, zoom, grid and label toggles, reset, rise/run triangle, live gradient (including undefined), tooltips, click-to-plot, text and table alternative.
-- Student: dashboard, world map, lab pages, the complete *Understanding Gradient* lesson (hook, I do, We do, You do, non-example, application with units, 3-question checkpoint, reflection, rewards summary), progress page (constructive language, released teacher feedback), kennel, shop (18 items, confirm, insufficient-funds, owned, history), leaderboard.
+- Student: dashboard, world map, lab pages, the complete *Understanding Gradient* lesson (hook, I do, We do, You do, non-example, application with units, 3-question checkpoint, reflection, rewards summary), progress page (constructive language, released teacher feedback), kennel, shop (64 items, confirm, insufficient-funds, owned, history), leaderboard.
 - Rewards ledger with idempotent keys: 3 coins first incorrect attempt, 10 coins + 5 XP first correct completion, nothing for repeats; check-in, lesson-complete reward, purchase validation.
 - Standard feedback messages, unit-aware equivalent-answer checking, KaTeX maths typesetting with text alternatives.
 - Student name entry and Edit Name (the tenth demo student), shared student/teacher marking rubric, redesigned My Labs page.

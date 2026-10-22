@@ -167,8 +167,8 @@ export interface Transaction {
   at: string
 }
 
-export type ItemCategory = 'hat' | 'neckwear' | 'eyewear' | 'colour' | 'background' | 'character'
-export type Rarity = 'common' | 'uncommon' | 'rare' | 'epic'
+export type ItemCategory = 'hat' | 'neckwear' | 'eyewear' | 'background' | 'character'
+export type Rarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'
 
 export interface ShopItem {
   id: string
@@ -185,7 +185,6 @@ export interface Equipped {
   hat?: string
   neckwear?: string
   eyewear?: string
-  colour?: string
   background?: string
 }
 

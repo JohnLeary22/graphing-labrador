@@ -6,7 +6,7 @@ import { useStudent } from '@/hooks/useStudent'
 import { buyItem } from '@/services/persistence/actions'
 import type { Equipped, ItemCategory, ShopItem } from '@/types'
 
-export const CATEGORY_LABEL: Record<ItemCategory, string> = { hat: 'Headwear', neckwear: 'Neckwear', eyewear: 'Eyewear', colour: 'Coat colours', background: 'Backgrounds', character: 'Characters' }
+export const CATEGORY_LABEL: Record<ItemCategory, string> = { hat: 'Headwear', neckwear: 'Neckwear', eyewear: 'Eyewear', background: 'Backgrounds', character: 'Characters' }
 export const slotOf = (c: ItemCategory): keyof Equipped | null => (c === 'character' ? null : c)
 
 export function ItemPreview({ item, size = 110 }: { item: ShopItem; size?: number }) {
@@ -20,6 +20,7 @@ export function Shop() {
   const [confirm, setConfirm] = useState<string | null>(null)
   const [msg, setMsg] = useState('')
   const items = SHOP_ITEMS.filter((i) => cat === 'all' || i.category === cat)
+  if (cat === 'all') items.sort((a, b) => a.price - b.price || a.name.localeCompare(b.name))
   const history = me.transactions.filter((t) => t.key.startsWith('COINS:purchase:'))
 
   function buy(item: ShopItem) {
@@ -39,7 +40,7 @@ export function Shop() {
       </header>
       <p role="status" aria-live="polite" className="min-h-6 text-sm font-semibold">{msg}</p>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
-        {(['all', 'hat', 'neckwear', 'eyewear', 'colour', 'background', 'character'] as const).map((c) => (
+        {(['all', 'hat', 'neckwear', 'eyewear', 'background', 'character'] as const).map((c) => (
           <button key={c} className={`btn !py-1 text-sm ${cat === c ? '!bg-brand !text-brand-ink' : ''}`} aria-pressed={cat === c} onClick={() => setCat(c)}>{c === 'all' ? 'All' : CATEGORY_LABEL[c]}</button>
         ))}
       </div>
@@ -51,7 +52,7 @@ export function Shop() {
             <li key={item.id} className="card flex flex-col items-center p-4 text-center">
               <ItemPreview item={item} />
               <h2 className="mt-2 font-bold">{item.name}</h2>
-              <p className="chip my-1 capitalize">{item.rarity}</p>
+              <p className={`chip my-1 capitalize ${item.rarity === 'legendary' ? 'rarity-legendary' : ''}`}>{item.rarity}</p>
               <p className="flex-1 text-sm text-soft">{item.description}</p>
               <div className="mt-3 w-full">
                 {owned ? (

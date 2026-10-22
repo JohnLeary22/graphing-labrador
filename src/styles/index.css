@@ -181,6 +181,66 @@ body {
   font-weight: 700;
 }
 
+/* Legendary cosmetics. Switched off by the reduced-motion rule below. */
+.leg-float {
+  animation: legFloat 3s ease-in-out infinite;
+}
+.leg-glow {
+  animation: legGlow 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px #fde047);
+}
+.leg-twinkle {
+  animation: legTwinkle 1.8s ease-in-out infinite;
+}
+.leg-spin {
+  animation: legSpin 24s linear infinite;
+  transform-box: view-box;
+}
+@keyframes legFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes legGlow {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes legTwinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes legSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rarity-legendary {
+  color: #3b2300;
+  border-color: #f59e0b;
+  background: linear-gradient(90deg, #fde047, #fbbf24, #fde047);
+  background-size: 200% 100%;
+  animation: legShimmer 3s linear infinite;
+}
+@keyframes legShimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 @keyframes bob {
   0%,
   100% {

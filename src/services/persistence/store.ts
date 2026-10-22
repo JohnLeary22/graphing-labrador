@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'react'
 import type { AttemptRecord, CharacterId, EconomyConfig, Equipped, Intervention, LessonPosition, MarkRecord, Role, Student, TeacherNote, Transaction } from '@/types'
 import { DEFAULT_ECONOMY, makeId } from '@/lib/rewards/economy'
 import { buildSeed, DEMO_STUDENT_ID, DEMO_STUDENTS, SEED_VERSION, STARTER_CHARACTER } from '@/data/demo/seed'
+import { REMOVED_ITEM_PRICES } from '@/data/curriculum/shop'
 
 /**
  * Demo data adapter: state lives in this browser only (localStorage). It is NOT shared between users or devices.
@@ -76,7 +77,19 @@ function migrate(p: AppState): AppState {
     const ids = new Set(attempts.map((a) => a.id))
     marks = { ...seed.marks, ...Object.fromEntries(Object.entries(p.marks).filter(([id]) => ids.has(id))) }
   }
-  return { ...p, economy, students, attempts, transactions, marks, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false }
+  // Coat colours were removed from the shop: refund any that were bought and clear them from the look.
+  let inventory = p.inventory
+  for (const [sid, items] of Object.entries(p.inventory)) {
+    const gone = items.filter((id) => id in REMOVED_ITEM_PRICES)
+    if (gone.length === 0) continue
+    inventory = { ...inventory, [sid]: items.filter((id) => !(id in REMOVED_ITEM_PRICES)) }
+    for (const id of gone) {
+      if (transactions.some((t) => t.studentId === sid && t.key === `COINS:refund:${id}`)) continue
+      transactions = [...transactions, { id: makeId('tx'), studentId: sid, type: 'COINS', amount: REMOVED_ITEM_PRICES[id], reason: 'Refund: coat colours were removed from the shop', key: `COINS:refund:${id}`, at: nowIso() }]
+    }
+  }
+  const appearance = Object.fromEntries(Object.entries(p.appearance).map(([sid, a]) => [sid, Object.fromEntries(Object.entries(a).filter(([k]) => k !== 'colour'))])) as AppState['appearance']
+  return { ...p, economy, students, attempts, transactions, marks, inventory, appearance, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false }
 }
 
 function load(): AppState {
