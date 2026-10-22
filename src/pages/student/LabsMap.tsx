@@ -41,7 +41,7 @@ export function LabsMap() {
         <div className="bg-surface/80 p-6">
           <p className="chip mb-2">Your world</p>
           <h1 className="font-display text-3xl font-extrabold">Vector Lab</h1>
-          <p className="max-w-2xl text-soft">Five labs sit on one coordinate grid, each led by its own Labrador. Slope Lab is open now. The others are being built.</p>
+          <p className="max-w-2xl text-soft">Five seperate labs sit on one coordinate grid, each led by its own Labrador. Slope Lab is open now. The others are being built.</p>
         </div>
       </header>
       <ul className="grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))' }}>

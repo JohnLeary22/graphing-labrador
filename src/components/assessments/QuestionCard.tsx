@@ -228,8 +228,9 @@ export function QuestionCard({ question: q, lessonId, studentId, fresh, onAnswer
               )
             )}
             {rewardText && (
-              <p className="mt-1 font-semibold">
-                {rewardText.COINS ? `+${rewardText.COINS} coins ` : ''}{rewardText.XP ? `+${rewardText.XP} XP` : ''}
+              <p className="mt-2 flex flex-wrap gap-2 font-semibold" aria-label="Rewards earned">
+                {rewardText.COINS ? <span className="chip">+{rewardText.COINS} coins</span> : null}
+                {rewardText.XP ? <span className="chip">+{rewardText.XP} XP</span> : null}
               </p>
             )}
           </div>
@@ -249,7 +250,7 @@ export function QuestionCard({ question: q, lessonId, studentId, fresh, onAnswer
 
       {resolved && (
         <div className="mt-4">
-          <button className="btn btn-primary" onClick={() => onResolved(outcome!.result.correct ? 'correct' : 'pending')}>Continue</button>
+          <button className="btn btn-primary" onClick={() => onResolved(outcome!.result.correct ? 'correct' : 'pending')}>Next Question</button>
         </div>
       )}
     </section>

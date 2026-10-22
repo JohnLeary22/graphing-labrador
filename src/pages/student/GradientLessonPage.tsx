@@ -53,8 +53,14 @@ export function GradientLessonPage() {
   const steps = GRADIENT_LESSON.steps as LessonStep[]
   const lessonAttempts = useMemo(() => me.attempts.filter((a) => a.lessonId === GRADIENT_LESSON_ID), [me.attempts])
   const stored = me.state.lessonState[me.id]?.[GRADIENT_LESSON_ID]
-  // Saves made before lesson positions existed are resumed from the student's attempts.
-  const position: LessonPosition = stored ?? derivePosition(steps, lessonAttempts)
+  // Derived once on arrival (for saves made before positions were stored). Re-deriving after each answer would skip ahead on its own.
+  const [initialPosition] = useState<LessonPosition>(() => stored ?? derivePosition(steps, lessonAttempts))
+  const position: LessonPosition = stored ?? initialPosition
+  useEffect(() => {
+    if (!stored) saveLessonPosition(me.id, GRADIENT_LESSON_ID, initialPosition)
+    // Runs once on arrival.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [skipped, setSkipped] = useState(false)
   const [answered, setAnswered] = useState(false)
   const resumed = useRef(position.stepIdx > 0 || position.qIdx > 0)
@@ -122,26 +128,22 @@ export function GradientLessonPage() {
       </ol>
 
       {step && (
-        <div key={step.id} className="grid gap-5 lg:grid-cols-2">
-          <div className="min-w-0 space-y-3 lg:sticky lg:top-4 lg:self-start">
-            <div>
-              <h2 className="font-display text-2xl font-bold">{step.title}</h2>
-              {step.intro && <p className="text-soft"><MathText text={step.intro} /></p>}
-            </div>
-            {step.graph && <StepGraph key={step.id} step={step} answered={answered && qIdx >= step.questions.length - 1} />}
+        <div key={step.id} className="mx-auto flex w-full max-w-3xl flex-col gap-5">
+          <div>
+            <h2 className="font-display text-2xl font-bold">{step.title}</h2>
+            {step.intro && <p className="text-soft"><MathText text={step.intro} /></p>}
           </div>
-          <div className="min-w-0 space-y-4">
-            {step.thinkAloud && (
-              <ThinkAloud lines={step.thinkAloud} n={Math.min(position.thinkN, step.thinkAloud.length)} onChange={(n) => save({ thinkN: n })} onDone={nextStep} />
-            )}
-            {step.questions[qIdx] && (
-              <QuestionCard
-                key={`${step.questions[qIdx].id}-${position.revision ? 'rev' : 'main'}`}
-                question={step.questions[qIdx]} lessonId={GRADIENT_LESSON_ID} studentId={me.id} fresh={position.revision}
-                onAnswered={setAnswered} onResolved={onResolved}
-              />
-            )}
-          </div>
+          {step.thinkAloud && (
+            <ThinkAloud lines={step.thinkAloud} n={Math.min(position.thinkN, step.thinkAloud.length)} onChange={(n) => save({ thinkN: n })} onDone={nextStep} />
+          )}
+          {step.graph && <div className="min-w-0"><StepGraph key={step.id} step={step} answered={answered && qIdx >= step.questions.length - 1} /></div>}
+          {step.questions[qIdx] && (
+            <QuestionCard
+              key={`${step.questions[qIdx].id}-${position.revision ? 'rev' : 'main'}`}
+              question={step.questions[qIdx]} lessonId={GRADIENT_LESSON_ID} studentId={me.id} fresh={position.revision}
+              onAnswered={setAnswered} onResolved={onResolved}
+            />
+          )}
         </div>
       )}
 

@@ -8,7 +8,7 @@ Last updated: 2026-10-22. Phase 1 and the first vertical slice are built. Everyt
 | --- | --- |
 | `npm run typecheck` | Pass |
 | `npm run lint` | Pass |
-| `npm test` | 192 tests pass (graph maths, scoring and units, rewards, diagnostics, store and name, UI, rubric) |
+| `npm test` | 214 tests pass (graph maths, scoring and units, rewards, diagnostics, store and name, UI, rubric) |
 | `npm run build` | Pass (one chunk-size warning: ~750 kB, mostly Recharts) |
 | Student lesson played end to end in a browser | Pass, no console errors |
 
@@ -63,3 +63,4 @@ Not yet run: Playwright e2e tests, automated accessibility audit, screen-reader 
 2. Playwright e2e for the student and teacher flows.
 3. Resume-in-place for lessons.
 4. Reports page and assignment creation.
+- Full documentation report: docs/GRAPHING_LABRADOR_FULL_REPORT (.md, .html, .pdf).

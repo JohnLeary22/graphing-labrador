@@ -16,7 +16,7 @@ export function Kennel() {
     <div className="space-y-5">
       <header>
         <h1 className="font-display text-3xl font-extrabold">My Kennel</h1>
-        <p className="text-soft">Changes save automatically and appear everywhere in Graphing Labrador.</p>
+        <p className="text-soft">Changes save automaticaly and appear everywhere in Graphing Labrador.</p>
       </header>
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <section className="card p-5 text-center lg:sticky lg:top-4 lg:self-start" aria-label="Preview">

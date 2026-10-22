@@ -56,7 +56,7 @@ src/
   services/persistence/ Demo adapter: store (localStorage) and actions
   types/
 supabase/               migrations/0001_initial_schema.sql (+ RLS), seed.sql
-tests/unit/             192 tests
+tests/unit/             214 tests
 ```
 
 Design tokens (colour, dark/light) are CSS variables in `src/styles/index.css`; components use semantic names such as `bg-surface` and `text-soft`.

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen, fireEvent, within } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { CartesianGraph } from '@/components/graphs/CartesianGraph'
 import { RubricView, RUBRIC_LEVELS, STRONG_RESPONSE_HEADING } from '@/components/assessments/RubricView'
@@ -227,14 +227,29 @@ describe('teacher portal', () => {
     expect(DEMO_CLASS.teacherName).toBe('Mr John Leary')
     expect(document.body.textContent).not.toContain('Rivera')
   })
-  it('Lesson Library has no Question Demands section and has the four in-development sections', () => {
-    render(<MemoryRouter><LessonLibrary /></MemoryRouter>)
+  it('Lesson Library has no Question Demands section and has four compact, collapsed In Development panels', () => {
+    const { container } = render(<MemoryRouter><LessonLibrary /></MemoryRouter>)
     expect(screen.queryByText(/Question demands/i)).toBeNull()
-    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
-    for (const h of ['In Development: Axis Lab', 'In Development: Vector Lab', 'In Development: Vertex Lab', 'In Development: Curve Lab']) expect(headings).toContain(h)
-    expect(headings).toContain('Understanding Gradient')
-    const region = screen.getByRole('region', { name: 'In Development: Axis Lab' })
-    expect(within(region).getByText('Planned (not built)')).toBeInTheDocument()
-    expect(within(region).getByText('Implemented now')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: 'Understanding Gradient' })).toBeInTheDocument()
+    const panels = Array.from(container.querySelectorAll('details'))
+    expect(panels).toHaveLength(4)
+    const names = panels.map((p) => p.querySelector('summary')?.textContent ?? '')
+    for (const lab of ['In Development: Axis Lab', 'In Development: Vector Lab', 'In Development: Vertex Lab', 'In Development: Curve Lab']) {
+      expect(names.some((n) => n.includes(lab))).toBe(true)
+    }
+    for (const p of panels) {
+      expect(p.open).toBe(false)
+      expect(p.querySelector('summary')?.textContent).toContain('In Development')
+    }
+  })
+  it('each In Development panel has the Slope Lab field headings in the same order, each showing only a dash', () => {
+    const { container } = render(<MemoryRouter><LessonLibrary /></MemoryRouter>)
+    const article = container.querySelector('article')!
+    const slopeHeadings = Array.from(article.querySelectorAll('dt')).map((d) => d.textContent)
+    for (const panel of Array.from(container.querySelectorAll('details'))) {
+      expect(Array.from(panel.querySelectorAll('dt')).map((d) => d.textContent)).toEqual(slopeHeadings)
+      for (const dd of Array.from(panel.querySelectorAll('dd'))) expect(dd.textContent).toBe('\u2014')
+    }
+    expect(slopeHeadings).toHaveLength(14)
   })
 })

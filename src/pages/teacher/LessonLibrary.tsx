@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { GRADIENT_LESSON } from '@/data/lessons/gradient'
 import { signIn } from '@/services/persistence/actions'
 import { SKILLS, MISCONCEPTIONS } from '@/data/curriculum/skills'
-import { DEV_LABS } from '@/data/curriculum/inDevelopment'
+import { DEV_LABS, LESSON_FIELD_HEADINGS } from '@/data/curriculum/inDevelopment'
 import { MathText } from '@/components/ui/MathText'
 
 const ROW = ({ k, children }: { k: string; children: React.ReactNode }) => (
@@ -15,7 +15,7 @@ export function LessonLibrary() {
     <div className="space-y-5">
       <header>
         <h1 className="font-display text-3xl font-extrabold">Lesson Library</h1>
-        <p className="text-soft">What students are taught, and why. One lesson is complete (Slope Lab); the other four labs are in development and listed below.</p>
+        <p className="text-soft">What students are taught, and why. One lesson is complete (Slope Lab); the other four labs are in development.</p>
       </header>
       <article className="card p-6" aria-labelledby="lesson-h">
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -44,21 +44,15 @@ export function LessonLibrary() {
         </dl>
       </article>
       {DEV_LABS.map((lab) => (
-        <section key={lab.id} className="card p-6" aria-labelledby={`dev-${lab.id}`}>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 id={`dev-${lab.id}`} className="font-display text-xl font-bold">{lab.heading}</h2>
-            <span className="chip">In Development</span>
-          </div>
-          <p className="text-sm text-soft">Character: {lab.character}</p>
+        <details key={lab.id} className="card group p-4">
+          <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
+            <span className="font-display text-lg font-bold">{lab.heading}</span>
+            <span className="flex items-center gap-2 text-sm text-soft">{lab.character} <span className="chip">In Development</span></span>
+          </summary>
           <dl className="mt-3">
-            <ROW k="Will teach"><ul className="list-disc pl-5">{lab.teaches.map((t) => <li key={t}>{t}</li>)}</ul></ROW>
-            <ROW k="Current status">{lab.status}</ROW>
-            <ROW k="Implemented now"><ul className="list-disc pl-5">{lab.implemented.map((t) => <li key={t}>{t}</li>)}</ul></ROW>
-            <ROW k="Planned (not built)"><ul className="list-disc pl-5">{lab.planned.map((t) => <li key={t}>{t}</li>)}</ul></ROW>
-            <ROW k="Assessment"><ul className="list-disc pl-5">{lab.assessment.map((t) => <li key={t}>{t}</li>)}</ul></ROW>
-            <ROW k="Curriculum">Draft only. Official outcome codes will be added after a teacher validates the mapping against the NSW syllabus.</ROW>
+            {LESSON_FIELD_HEADINGS.map((h) => <ROW key={h} k={h}>{'\u2014'}</ROW>)}
           </dl>
-        </section>
+        </details>
       ))}
     </div>
   )

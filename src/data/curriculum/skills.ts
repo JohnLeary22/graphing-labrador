@@ -36,5 +36,8 @@ export const TAG_TO_MISCONCEPTION: Record<string, string> = {
   'xy-reversal': 'xy-reversal',
   'sign-dropped': 'negative-sign-ignored',
   'unit-missing': 'units-missing',
+  'unit-wrong': 'units-missing',
+  'intercept-gradient': 'intercept-gradient',
+  'scale-misread': 'scale-misread',
   'height-vs-rate': 'height-vs-rate',
 }

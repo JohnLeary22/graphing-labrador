@@ -17,7 +17,7 @@ export function Leaderboard() {
     <div className="space-y-4">
       <header>
         <h1 className="font-display text-3xl font-extrabold">Leaderboard</h1>
-        <p className="text-soft">XP earned for genuine attempts and successes (not time spent). Display names only.</p>
+        <p className="text-soft">XP earned for genuine attempts and sucesses (not time spent). Display names only.</p>
       </header>
       <ol className="space-y-2">
         {rows.map((r, i) => (

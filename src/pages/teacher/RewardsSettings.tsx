@@ -45,7 +45,7 @@ export function RewardsSettings() {
           <input type="checkbox" checked={s.settings.leaderboard} onChange={(e) => setSetting('leaderboard', e.target.checked)} />
           Show the class leaderboard to students (display names only)
         </label>
-        <p className="mt-2 text-sm text-soft">Real-world prizes must be set up and awarded by the teacher in line with school rules. Not yet built: prize approvals workflow (see PROGRESS.md).</p>
+        <p className="mt-2 text-sm text-soft">Real-world prizes must be set up and awarded by the teacher in line with school rules.</p>
       </section>
     </div>
   )
