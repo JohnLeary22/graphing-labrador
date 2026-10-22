@@ -28,6 +28,8 @@ export interface AppState {
   seedVersion: number
   /** False until the demo student has entered their name. */
   nameChosen: boolean
+  /** EDUC2151 workshop option: unlimited coins and showcase classmates. */
+  creativeMode: boolean
   settings: { theme: 'light' | 'dark'; text: 'normal' | 'large'; leaderboard: boolean }
 }
 
@@ -56,6 +58,7 @@ function initialState(): AppState {
     lessonState: {},
     seedVersion: SEED_VERSION,
     nameChosen: false,
+    creativeMode: false,
     settings: { theme: 'dark', text: 'normal', leaderboard: true },
   }
 }
@@ -89,7 +92,7 @@ function migrate(p: AppState): AppState {
     }
   }
   const appearance = Object.fromEntries(Object.entries(p.appearance).map(([sid, a]) => [sid, Object.fromEntries(Object.entries(a).filter(([k]) => k !== 'colour'))])) as AppState['appearance']
-  return { ...p, economy, students, attempts, transactions, marks, inventory, appearance, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false }
+  return { ...p, economy, students, attempts, transactions, marks, inventory, appearance, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false, creativeMode: p.creativeMode ?? false }
 }
 
 function load(): AppState {

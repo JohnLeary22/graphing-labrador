@@ -30,7 +30,7 @@ export function Progress() {
       </header>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          ['Level', String(me.level)], ['Total XP', String(me.xp)], ['Coins earned', String(me.earned)], ['Coins spent', String(me.spent)],
+          ['Level', String(me.level)], ['Total XP', String(me.xp)], ['Coins earned', me.creative ? me.coinsLabel : String(me.earned)], ['Coins spent', me.creative ? me.coinsLabel : String(me.spent)],
         ].map(([k, v]) => <div key={k} className="card p-4"><p className="text-sm text-soft">{k}</p><p className="font-display text-3xl font-extrabold">{v}</p></div>)}
       </div>
       <section className="card p-5" aria-labelledby="skills-h">

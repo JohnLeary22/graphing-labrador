@@ -19,6 +19,9 @@ export function useStudent() {
     const attempts = s.attempts.filter((a) => a.studentId === id)
     return {
       state: s, id, student, coins, xp, level: levelFromXp(xp), xpInto: xpIntoLevel(xp), earned, spent, owned, appearance,
+      creative: s.creativeMode,
+      /** Creative mode shows an infinity symbol instead of a coin amount. */
+      coinsLabel: s.creativeMode ? '\u221e' : String(coins),
       unlockedCharacters, attempts, completed: s.completedLessons[id] ?? [],
       transactions: s.transactions.filter((t) => t.studentId === id).slice().reverse(),
     }

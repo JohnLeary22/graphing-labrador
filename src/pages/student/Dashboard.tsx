@@ -53,7 +53,7 @@ export function StudentDashboard() {
                 <div className="h-3 overflow-hidden rounded-full bg-surface-2"><div className="h-full rounded-full bg-brand transition-all" style={{ width: `${me.xpInto}%` }} /></div>
                 <p className="mt-1 text-xs text-soft">{me.xpInto} / {XP_PER_LEVEL} XP to level {me.level + 1}</p>
               </div>
-              <span className="chip"><Coins size={14} /> {me.coins} coins</span>
+              <span className="chip"><Coins size={14} /> {me.coinsLabel} coins</span>
             </div>
           </div>
           <div className="text-center">

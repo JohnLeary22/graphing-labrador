@@ -632,3 +632,15 @@ No other misspellings were found in the interface, lesson data, question bank, f
 ## 24. Later change: shop expansion
 
 Coat colours were removed. Headwear, neckwear, eyewear and backgrounds now each have 15 items with a 5 / 4 / 3 / 2 / 1 split across common, uncommon, rare, epic and legendary, and each category's legendary is animated. The All view is sorted by price. Artwork is in `src/components/mascots/cosmetics.tsx`, the catalogue in `src/data/curriculum/shop.ts`, animation in `src/styles/index.css`, and the saved-data upgrade (refund and unequip of removed coat colours) in `src/services/persistence/store.ts`. Tests are in `tests/unit/shop.test.tsx`.
+
+## 25. Later change: Creative mode (EDUC2151 workshop option)
+
+The "My name is..." screen has an unticked checkbox titled **Creative mode**, described as "This is implemented for EDUC2151 only - unlimited coins are granted to workshop rewards". It can only be chosen there, so someone who already has a saved name needs to use Reset demo data on the landing page to see it.
+
+When ticked:
+
+- The coin balance shows an infinity symbol everywhere it is displayed (sidebar, dashboard, shop, My Progress). Coin gains still appear as before (for example "+10 coins" after a correct answer) and are still recorded; only the balance is shown as infinite.
+- Every shop item can be bought. Nothing is deducted and nothing is unaffordable; an owned item still cannot be bought twice.
+- The nine fictional classmates each get their own character and look. Hector 3, Tex 2, Slobber 2, Axel 1 and Kirby 1, each with a different hat, neckwear, eyewear and background. One classmate (Noah) is Kirby, wears all four legendary items and has high XP, so he is first on the leaderboard.
+
+When not ticked, behaviour is exactly as before. Source: `src/pages/student/NamePrompt.tsx`, `src/data/demo/creative.ts`, `setStudentName` and `buyItem` in `src/services/persistence/actions.ts`. Tests: `tests/unit/creative.test.tsx`.

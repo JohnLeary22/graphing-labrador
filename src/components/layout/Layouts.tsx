@@ -102,7 +102,7 @@ export function StudentLayout() {
       <Labrador character={me.appearance.character} equipped={me.appearance} size={44} showBackground={false} />
       <div className="text-xs leading-tight">
         <p className="font-bold">{me.student.displayName}</p>
-        <p className="flex items-center gap-1 text-soft"><Coins size={12} /> {me.coins} coins · Lv {me.level}</p>
+        <p className="flex items-center gap-1 text-soft"><Coins size={12} /> {me.coinsLabel} coins · Lv {me.level}</p>
       </div>
     </div>
   )

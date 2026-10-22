@@ -36,7 +36,7 @@ export function Shop() {
           <h1 className="font-display text-3xl font-extrabold">Reward Shop</h1>
           <p className="text-soft">Cosmetics only. Everything you need to learn is free. Coins come from answering questions: see "How rewards work" on your dashboard.</p>
         </div>
-        <span className="chip !text-base"><Coins size={16} /> {me.coins} coins</span>
+        <span className="chip !text-base"><Coins size={16} /> {me.coinsLabel} coins</span>
       </header>
       <p role="status" aria-live="polite" className="min-h-6 text-sm font-semibold">{msg}</p>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
@@ -47,7 +47,7 @@ export function Shop() {
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => {
           const owned = me.owned.includes(item.id)
-          const affordable = me.coins >= item.price
+          const affordable = me.creative || me.coins >= item.price
           return (
             <li key={item.id} className="card flex flex-col items-center p-4 text-center">
               <ItemPreview item={item} />

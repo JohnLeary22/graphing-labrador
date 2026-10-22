@@ -2,6 +2,7 @@ import type { AttemptRecord, EvaluationResult, Intervention, Point, Question, Tr
 import { evaluate } from '@/lib/scoring/evaluate'
 import { balanceOf, purchase, rewardForCheckIn, rewardForCheckpoint, rewardsForAttempt, makeId } from '@/lib/rewards/economy'
 import { itemById } from '@/data/curriculum/shop'
+import { CREATIVE_LOOKS, CREATIVE_TOP_STUDENT, CREATIVE_TOP_XP } from '@/data/demo/creative'
 import { getState, nowIso, todayKey, update } from './store'
 import type { AppState } from './store'
 import type { CharacterId, EconomyConfig, Equipped, LessonPosition, MarkRecord, Role } from '@/types'
@@ -27,14 +28,26 @@ export function restartLessonForRevision(studentId: string, lessonId: string) {
 }
 
 /** Renames the browser's demo student in place; attempts, coins, XP and inventory stay linked by id. */
-export function setStudentName(studentId: string, raw: string): boolean {
+export function setStudentName(studentId: string, raw: string, creative?: boolean): boolean {
   const name = raw.replace(/\s+/g, ' ').trim().slice(0, 30)
   if (!name) return false
-  update((cur) => ({
-    ...cur,
-    nameChosen: true,
-    students: cur.students.map((s) => (s.id === studentId ? { ...s, name, displayName: name } : s)),
-  }))
+  update((cur) => {
+    let next: AppState = {
+      ...cur,
+      nameChosen: true,
+      students: cur.students.map((s) => (s.id === studentId ? { ...s, name, displayName: name } : s)),
+    }
+    if (creative !== undefined) next = { ...next, creativeMode: creative }
+    if (creative) {
+      const hasXp = next.transactions.some((t) => t.key === 'XP:creative-showcase')
+      next = {
+        ...next,
+        appearance: { ...next.appearance, ...CREATIVE_LOOKS },
+        transactions: hasXp ? next.transactions : [...next.transactions, { id: makeId('tx'), studentId: CREATIVE_TOP_STUDENT, type: 'XP', amount: CREATIVE_TOP_XP, reason: 'Creative mode showcase', key: 'XP:creative-showcase', at: nowIso() }],
+      }
+    }
+    return next
+  })
   return true
 }
 
@@ -94,6 +107,13 @@ export function buyItem(studentId: string, itemId: string): { ok: true } | { ok:
   const s = getState()
   if (!item) return { ok: false, error: 'unknown' }
   const owned = s.inventory[studentId] ?? []
+  if (s.creativeMode) {
+    // Creative mode: coins are unlimited, so nothing is deducted and nothing can be unaffordable.
+    if (owned.includes(item.id)) return { ok: false, error: 'owned' }
+    const free: Transaction = { id: makeId('tx'), studentId, type: 'COINS', amount: 0, reason: `Purchased ${item.name} (Creative mode)`, key: `COINS:purchase:${item.id}`, at: nowIso() }
+    update((cur) => ({ ...cur, transactions: [...cur.transactions, free], inventory: { ...cur.inventory, [studentId]: [...owned, item.id] } }))
+    return { ok: true }
+  }
   const res = purchase(studentId, item, owned, s.transactions, nowIso())
   if (!res.ok) return res
   update((cur) => ({
