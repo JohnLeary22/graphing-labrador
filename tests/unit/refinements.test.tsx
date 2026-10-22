@@ -181,18 +181,17 @@ describe('website text hygiene', () => {
       expect(text, p).not.toMatch(/PROGRESS\.md|README\.md|supabase\/|src\/|checklist\b(?! before)/i)
     }
   })
-  it('keeps the intentional disclaimer spelling and exactly six other hand-placed slips', () => {
+  it('keeps only the one intentional disclaimer spelling; all other text is correctly spelt', () => {
     const all = files.map((f) => f.text).join('\n')
     expect(all).toContain('fitcional')
-    const slips = ['seperate', 'automaticaly', 'dashbord', 'sucesses', 'comparisions', 'absense']
-    for (const s of slips) expect(all.split(s).length - 1, s).toBe(1)
+    for (const s of ['seperate', 'automaticaly', 'dashbord', 'sucesses', 'comparisions', 'absense', 'recieve', 'definately']) expect(all, s).not.toContain(s)
   })
-  it('never places a slip in feedback, rubric, maths or assessment text', () => {
+  it('never places a misspelling in feedback, rubric, maths or assessment text', () => {
     const protectedText = [
       readFileSync(join(process.cwd(), 'src/data/lessons/gradient.ts'), 'utf8'),
       readFileSync(join(process.cwd(), 'src/lib/scoring/messages.ts'), 'utf8'),
       readFileSync(join(process.cwd(), 'src/components/assessments/RubricView.tsx'), 'utf8'),
     ].join('\n')
-    for (const s of ['seperate', 'automaticaly', 'dashbord', 'sucesses', 'comparisions', 'absense']) expect(protectedText).not.toContain(s)
+    for (const s of ['seperate', 'automaticaly', 'dashbord', 'sucesses', 'comparisions', 'absense', 'fitcional']) expect(protectedText).not.toContain(s)
   })
 })

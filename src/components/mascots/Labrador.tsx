@@ -1,5 +1,7 @@
 import type { CharacterId, Equipped } from '@/types'
 import { CHARACTERS } from '@/data/curriculum/labs'
+import { ANCHORS, DOGS, PALETTES } from './dogs'
+import type { Palette } from './dogs'
 
 export type Expression = 'happy' | 'thinking' | 'proud'
 
@@ -14,10 +16,10 @@ interface Props {
   label?: string
 }
 
-const COATS: Record<string, { base: string; shade: string; light: string }> = {
-  yellow: { base: '#e2b45f', shade: '#c4902f', light: '#f1d08e' },
-  'col-chocolate': { base: '#6e4630', shade: '#4f301f', light: '#8a5a40' },
-  'col-black': { base: '#33333a', shade: '#1a1a1f', light: '#4a4a54' },
+/** Shop coat colours recolour a dog but keep its own shape. */
+const COAT_OVERRIDES: Record<string, Palette> = {
+  'col-chocolate': PALETTES.vector,
+  'col-black': PALETTES.axis,
 }
 
 function Motif({ kind, color }: { kind: string; color: string }) {
@@ -70,7 +72,15 @@ function Background({ id }: { id?: string }) {
 
 export function Labrador({ character, equipped = {}, expression = 'happy', size = 160, idle = false, showBackground = true, label }: Props) {
   const c = CHARACTERS[character]
-  const coat = COATS[equipped.colour ?? 'yellow'] ?? COATS.yellow
+  const palette = COAT_OVERRIDES[equipped.colour ?? ''] ?? PALETTES[character]
+  const anchor = ANCHORS[character]
+  const dog = DOGS[character]
+  const part = { p: palette, a: anchor, expression }
+  // Hats and glasses are drawn for a reference head; this maps them onto this dog's head.
+  const sx = anchor.rx / 47
+  const sy = anchor.ry / 45
+  const headT = `translate(${anchor.cx} ${anchor.cy}) scale(${sx} ${sy}) translate(-100 -92)`
+  const neckT = `translate(100 ${anchor.neckDy}) scale(${anchor.neckScale} 1) translate(-100 0)`
   const name = label ?? `${c.nickname} the Labrador (${c.name})`
   return (
     <svg viewBox="0 0 200 200" width={size} height={size} role="img" aria-label={name} className={idle ? 'mascot-idle' : undefined}>
@@ -81,16 +91,18 @@ export function Labrador({ character, equipped = {}, expression = 'happy', size 
       </defs>
       <g clipPath={`url(#clip-${character})`}>
         {showBackground ? <Background id={equipped.background} /> : null}
-        {/* shoulders */}
-        <ellipse cx="100" cy="196" rx="66" ry="50" fill={coat.base} />
-        {/* collar */}
-        <path d="M66 146 Q100 168 134 146 L134 156 Q100 178 66 156 Z" fill={c.accent} />
+        {dog.Body(part)}
+        <g transform={neckT}>
+          {/* collar */}
+          <path d="M66 146 Q100 168 134 146 L134 156 Q100 178 66 156 Z" fill={c.accent} />
+        </g>
         {/* badge */}
-        <g transform="translate(100 176)">
-          <circle r="13" fill="#0b1b3a" stroke={c.accent} strokeWidth="2" />
-          <Motif kind={c.motif} color={c.accent} />
+        <g transform={`translate(100 ${anchor.badgeY})`}>
+          <circle r={anchor.badgeR} fill="#0b1b3a" stroke={c.accent} strokeWidth="2" />
+          <g transform={`scale(${anchor.badgeR / 13})`}><Motif kind={c.motif} color={c.accent} /></g>
         </g>
         {/* neckwear */}
+        <g transform={neckT}>
         {equipped.neckwear === 'neck-bandana' && (
           <g>
             <polygon points="68,142 132,142 100,182" fill="#0e7490" />
@@ -110,27 +122,9 @@ export function Labrador({ character, equipped = {}, expression = 'happy', size 
             <rect x="112" y="150" width="14" height="34" rx="5" fill="#0f766e" />
           </g>
         )}
-        {/* ears */}
-        <ellipse cx="55" cy="96" rx="17" ry="34" transform="rotate(14 55 96)" fill={coat.shade} />
-        <ellipse cx="145" cy="96" rx="17" ry="34" transform="rotate(-14 145 96)" fill={coat.shade} />
-        {/* head */}
-        <ellipse cx="100" cy="92" rx="47" ry="45" fill={coat.base} />
-        {/* snout */}
-        <ellipse cx="100" cy="112" rx="27" ry="21" fill={coat.light} />
-        <ellipse cx="100" cy="102" rx="9" ry="6.5" fill="#15151a" />
-        <path d="M100 108 V116 M100 116 Q92 124 84 117 M100 116 Q108 124 116 117" stroke="#15151a" strokeWidth="2" fill="none" strokeLinecap="round" />
-        {(expression === 'happy' || expression === 'proud') && <path d="M95 122 Q100 138 105 122 Z" fill="#f472b6" />}
-        {/* eyes */}
-        <g fill="#15151a">
-          <circle cx="82" cy="84" r="5.5" />
-          <circle cx="118" cy="84" r="5.5" />
         </g>
-        <g fill="#fff">
-          <circle cx="84" cy="82" r="1.8" />
-          <circle cx="120" cy="82" r="1.8" />
-        </g>
-        {expression === 'thinking' && <path d="M72 70 Q82 64 92 70 M108 66 Q118 62 128 68" stroke={coat.shade} strokeWidth="3" fill="none" strokeLinecap="round" />}
-        {expression === 'proud' && <path d="M72 72 Q82 67 92 72 M108 72 Q118 67 128 72" stroke={coat.shade} strokeWidth="3" fill="none" strokeLinecap="round" />}
+        {dog.Head(part)}
+        <g transform={headT}>
         {/* eyewear */}
         {equipped.eyewear === 'eye-glasses' && (
           <g stroke="#111827" strokeWidth="2.5" fill="rgb(255 255 255 / 0.15)">
@@ -174,6 +168,7 @@ export function Labrador({ character, equipped = {}, expression = 'happy', size 
             <circle cx="100" cy="46" r="4" fill="#ef4444" />
           </g>
         )}
+        </g>
       </g>
     </svg>
   )

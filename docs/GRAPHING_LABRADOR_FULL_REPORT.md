@@ -471,7 +471,7 @@ The teacher is shown as Mr John Leary. The class is "Year 9 Maths 9A (demo)".
 | Production build | Pass |
 | Unit and component tests | 214 tests in 7 files, all pass |
 
-**What the tests cover:** graph maths (coordinates, gradient, intercepts, line clipping); answer checking and units, including all the equivalent forms listed in section 10; the exact feedback messages for every auto-marked question; every reward scenario and replay safety; saved-data upgrades; name entry and renaming without losing progress; lesson feedback not advancing by itself; the graph being above the question; lesson stages and question count; rubric text word for word and identical for students and teachers; the demonstration disclaimer; lab cards and wording; the teacher name; the Lesson Library panels; the dashboard activity and error calculations; and a check that the six deliberate spelling slips each occur once and never in protected text.
+**What the tests cover:** graph maths (coordinates, gradient, intercepts, line clipping); answer checking and units, including all the equivalent forms listed in section 10; the exact feedback messages for every auto-marked question; every reward scenario and replay safety; saved-data upgrades; name entry and renaming without losing progress; lesson feedback not advancing by itself; the graph being above the question; lesson stages and question count; rubric text word for word and identical for students and teachers; the demonstration disclaimer; lab cards and wording; the teacher name; the Lesson Library panels; the dashboard activity and error calculations; and a check that no known misspelling appears anywhere in the source.
 
 **Browser checks performed (using browser automation against the running site)**
 
@@ -521,7 +521,7 @@ The teacher is shown as Mr John Leary. The class is "Year 9 Maths 9A (demo)".
 | Demo due date | The assignment due date is set relative to first use and stored in the browser |
 | Seeded classmates | Regenerated when the data version changes; their teacher marks are kept only for responses that still exist |
 | Automation limitation | Browser-automation clicks can time out when the page is not visible; the checks above worked around this |
-| Intentional spelling slips | The disclaimer contains "fitcional" on purpose, and six single slips were placed deliberately in short descriptive text (section 22) |
+| Spelling | The landing-page disclaimer deliberately contains "fitcional" (one isolated sentence, kept as requested). All other text was spell-checked and corrected (section 23) |
 | Not production-ready | Needs school approval, privacy review, accounts and server-side validation before real students use it |
 
 ## 20. Deployment and maintenance
@@ -594,19 +594,36 @@ Changes made in this round:
 5. **Recent submissions.** Now shows student and lesson stage ("completed", "attempted" or "submitted", with to mark or marked for written work), built from recorded attempts only.
 6. **Lesson Library.** The four In Development labs are now compact collapsed panels with the same 14 field headings as Slope Lab in the same order, each showing a dash. The Slope Lab information is unchanged.
 7. **Developer references removed.** A visible mention of the progress file in Rewards Settings was removed. The My Progress page and progress tracking are untouched. No other internal references were found in the interface.
-8. **Six spelling slips added** (plus the existing "fitcional"), each in one fixed sentence:
-
-| Word | Page | Sentence |
-| --- | --- | --- |
-| seperate | My Labs (`LabsMap.tsx`) | "Five seperate labs sit on one coordinate grid, each led by its own Labrador." |
-| automaticaly | My Kennel (`Kennel.tsx`) | "Changes save automaticaly and appear everywhere in Graphing Labrador." |
-| dashbord | Reward Shop (`Shop.tsx`) | "...see "How rewards work" on your dashbord." |
-| sucesses | Leaderboard (`Leaderboard.tsx`) | "XP earned for genuine attempts and sucesses (not time spent)." |
-| comparisions | My Progress (`Progress.tsx`) | "...No comparisions with classmates here." |
-| absense | Teacher dashboard, Missing work (`teacher/Dashboard.tsx`) | "Check absense, access and support needs before escalating." |
-
-   None is in a heading, button, label, feedback message, rubric, question, maths or shared component. A test confirms each appears exactly once.
+8. **Six spelling slips added (later corrected).** Six deliberate slips were placed in short descriptive text in this round. In the next round they were all corrected (see section 23), because each sat in a reusable interface description.
 9. **Tests.** Added tests for non-advancing feedback, the four reward scenarios, layout order, activity and error calculations, Lesson Library panels and text hygiene. Total 214 passing.
 10. **Documentation.** Added this report and a Git checkpoint taken before the changes.
 
 Not changed: the 11 questions and 8 lesson stages, the reward amounts, the marking rubric text, the mathematics rendering and the saved student data.
+
+## 23. Later changes: mascot redesign and spelling audit
+
+**Mascots.** The five Labradors were redrawn as five separate designs in `src/components/mascots/dogs.tsx`, composed by `src/components/mascots/Labrador.tsx` (same props as before, so every page that shows a mascot updates automatically). Hats, glasses and neckwear from the shop are mapped onto each dog's own head size.
+
+| Character | Design |
+| --- | --- |
+| Hector | Large, broad head, wide muzzle, relaxed ears, confident brows, chocolate coat, broad shoulders |
+| Tex | Small, narrow face, oversized floppy ears, tongue out, large playful eyes, pale-yellow coat, small body |
+| Axel | Lean, long muzzle, alert almond eyes, asymmetrical ears (one folded, one lifted), black coat with a light rim so it shows on the navy background |
+| Slobber | Round face, floppy ears, wide cheerful smile, golden coat, stocky body |
+| Kirby | Soft round face, short muzzle, gentle eyes, long ears set high with a flipped tip, cream coat, compact body |
+
+Each keeps its name, accent colour and mathematical collar badge. The shop coat-colour items (Chocolate, Black) recolour a dog but keep its own shape.
+
+**Spelling audit.** Every user-visible string in `src` was checked against a dictionary and then reviewed by hand. Australian spellings (colour, practise, organised, modelled, labelled, travelling, penalised, kilometre) are correct and were kept.
+
+| Misspelling | Location | Reusable? | Action |
+| --- | --- | --- | --- |
+| seperate | My Labs header | Generic page description | Corrected to "separate" |
+| automaticaly | My Kennel subtitle | Generic page description | Corrected to "automatically" |
+| dashbord | Reward Shop description | Generic page description | Corrected to "dashboard" |
+| sucesses | Leaderboard subtitle | Generic page description | Corrected to "successes" |
+| comparisions | My Progress subtitle (shown with the student's name) | Template | Corrected to "comparisons" |
+| absense | Teacher dashboard, Missing work note | Generic note | Corrected to "absence" |
+| fitcional | Landing-page demonstration disclaimer | No: one isolated sentence written by the project owner | Retained as requested earlier. It can be changed in `src/data/copy.ts` |
+
+No other misspellings were found in the interface, lesson data, question bank, feedback messages, rubric, marking pages, rewards text, navigation or the seeded classmates' responses.

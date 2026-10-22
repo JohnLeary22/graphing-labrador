@@ -33,7 +33,7 @@ export function Shop() {
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-extrabold">Reward Shop</h1>
-          <p className="text-soft">Cosmetics only. Everything you need to learn is free. Coins come from answering questions: see "How rewards work" on your dashbord.</p>
+          <p className="text-soft">Cosmetics only. Everything you need to learn is free. Coins come from answering questions: see "How rewards work" on your dashboard.</p>
         </div>
         <span className="chip !text-base"><Coins size={16} /> {me.coins} coins</span>
       </header>

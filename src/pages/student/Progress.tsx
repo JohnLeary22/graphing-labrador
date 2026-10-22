@@ -26,7 +26,7 @@ export function Progress() {
     <div className="space-y-5">
       <header>
         <h1 className="font-display text-3xl font-extrabold">My Progress</h1>
-        <p className="text-soft">{me.student.displayName}'s own improvement over time. No comparisions with classmates here.</p>
+        <p className="text-soft">{me.student.displayName}'s own improvement over time. No comparisons with classmates here.</p>
       </header>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[

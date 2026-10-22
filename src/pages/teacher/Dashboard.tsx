@@ -79,7 +79,7 @@ export function TeacherDashboard() {
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="card p-5" aria-labelledby="miss-h">
           <h2 id="miss-h" className="mb-2 font-display text-xl font-bold">Missing work</h2>
-          <p className="mb-2 text-xs text-soft">Not started is not the same as unwilling. Check absense, access and support needs before escalating.</p>
+          <p className="mb-2 text-xs text-soft">Not started is not the same as unwilling. Check absence, access and support needs before escalating.</p>
           {notStarted.length === 0 ? <p className="text-soft">Everyone has started.</p> : (
             <ul className="space-y-2 text-sm">
               {notStarted.map((r) => <li key={r.student.id} className="flex items-center justify-between rounded-lg bg-surface-2 p-2"><span>{r.student.displayName}: not started</span><Link className="underline" to={`/teacher/students/${r.student.id}`}>Open</Link></li>)}
