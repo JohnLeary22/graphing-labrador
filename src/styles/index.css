@@ -1,0 +1,224 @@
+@import 'tailwindcss';
+
+/* Design tokens. Components use these semantic colours rather than raw hex values. */
+:root {
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --surface-2: #ebe7dc;
+  --ink: #0b1b3a;
+  --ink-soft: #46506b;
+  --line: #d4cfc0;
+  --brand: #0e7490;
+  --brand-ink: #ffffff;
+  --accent: #b45309;
+  --accent-soft: #fef3c7;
+  --good: #15803d;
+  --good-soft: #dcfce7;
+  --warn: #a16207;
+  --warn-soft: #fef9c3;
+  --bad: #b91c1c;
+  --bad-soft: #fee2e2;
+  --grid: #cfd8e3;
+  --graph-bg: #fbfdff;
+  --focus: #1d4ed8;
+}
+
+[data-theme='dark'] {
+  --bg: #07132b;
+  --surface: #0e2145;
+  --surface-2: #14305f;
+  --ink: #f1f5f9;
+  --ink-soft: #b4c0d6;
+  --line: #27457f;
+  --brand: #2dd4bf;
+  --brand-ink: #04202b;
+  --accent: #fbbf24;
+  --accent-soft: #3b2f0b;
+  --good: #4ade80;
+  --good-soft: #0c3320;
+  --warn: #facc15;
+  --warn-soft: #3a3208;
+  --bad: #fca5a5;
+  --bad-soft: #4a1717;
+  --grid: #223a6b;
+  --graph-bg: #0a1a38;
+  --focus: #93c5fd;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --font-display: 'Avenir Next', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+  font-size: 100%;
+}
+html[data-text='large'] {
+  font-size: 118%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* Graph-paper motif used behind page headers. */
+.graph-paper {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  font-weight: 650;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.15);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--brand);
+  color: var(--brand-ink);
+  border-color: transparent;
+}
+.btn-accent {
+  background: var(--accent);
+  color: #111827;
+  border-color: transparent;
+}
+[data-theme='dark'] .btn-accent {
+  color: #1c1400;
+}
+
+.input {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+/* Restrained maths emphasis: colour is never the only cue (negatives are bold and tinted). */
+.katex {
+  font-size: 1.1em;
+}
+.katex .m-rise {
+  color: var(--accent);
+}
+.katex .m-run {
+  color: var(--brand);
+}
+.katex .m-neg {
+  font-weight: 700;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 4px;
+  padding: 0 0.12em;
+}
+.katex .m-result {
+  font-weight: 700;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.mascot-idle {
+  animation: bob 3.5s ease-in-out infinite;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.pop-in {
+  animation: pop 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
