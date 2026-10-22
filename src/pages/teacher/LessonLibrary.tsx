@@ -22,14 +22,14 @@ export function LessonLibrary() {
           <div>
             <p className="chip">Slope Lab · about {GRADIENT_LESSON.durationMinutes} min</p>
             <h2 id="lesson-h" className="mt-2 font-display text-2xl font-bold">{GRADIENT_LESSON.title}</h2>
-            <p className="text-soft">Topic: Gradient and rates of change</p>
+            <p className="text-soft">Year 8 / Stage 4 Mathematics · Topic: Linear relationships</p>
           </div>
           <button className="btn btn-primary" onClick={() => { signIn('student'); navigate('/student/lesson/gradient') }}>Preview student lesson (switches to demo student)</button>
         </div>
         <dl className="mt-4">
           <ROW k="Learning intention">{GRADIENT_LESSON.learningIntention}</ROW>
           <ROW k="Success criteria"><ul className="list-disc pl-5">{GRADIENT_LESSON.successCriteria.map((s) => <li key={s}>{s}</li>)}</ul></ROW>
-          <ROW k="Curriculum connection"><span className="chip">Draft mapping - needs teacher review</span> Linear relationships and rates of change, NSW Mathematics K-10 (2022) Stage 5. Official outcome codes are not shown until validated against the syllabus.</ROW>
+          <ROW k="Curriculum connection"><span className="chip">MA4-LIN-C-01</span> NSW Mathematics K–10 (2022), Year 8 / Stage 4 Mathematics — Linear relationships. Compare similarities and differences of multiple straight-line graphs on the same set of axes using graphing applications</ROW>
           <ROW k="Worked example (I do)"><MathText text={'For $A(1,\\,2)$ and $B(3,\\,6)$: $$m = \\dfrac{\\htmlClass{m-rise}{6 - 2}}{\\htmlClass{m-run}{3 - 1}} = \\dfrac{\\htmlClass{m-rise}{4}}{\\htmlClass{m-run}{2}} = 2$$ Rise is shown in amber and run in teal; negative values are bracketed and bold, as in $1 - \\htmlClass{m-neg}{(-1)} = 2$.'} /></ROW>
           <ROW k="Prerequisite knowledge">Cartesian coordinates and reading scales.</ROW>
           <ROW k="Literacy demand">Understanding terms such as gradient, rise, run, rate, increase and decrease, and interpreting worded descriptions. Example: "how quickly" asks for a rate, not the highest point.</ROW>

@@ -17,7 +17,7 @@ export function Landing() {
         <div className="mx-auto flex max-w-6xl justify-end"><ThemeControls /></div>
         <main className="mx-auto grid max-w-6xl items-center gap-10 py-10 md:grid-cols-2">
           <div>
-            <p className="chip mb-4">Year 9 Mathematics · Graphing · Vector Lab</p>
+            <p className="chip mb-4">Year 8 / Stage 4 Mathematics · Linear relationships · Vector Lab</p>
             <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight md:text-6xl">Graphing Labrador</h1>
             <p className="mt-4 max-w-lg text-lg text-soft">
               Explore graphs by moving them, calculate with evidence of your thinking, and earn rewards for genuine effort. Teachers see what students understand, and why.

@@ -1,7 +1,7 @@
 {
   "name": "graphing-labrador",
   "version": "0.1.0",
-  "description": "Graphing Labrador - Year 9 graphing platform",
+  "description": "Graphing Labrador - Year 8 / Stage 4 Mathematics: Linear relationships (MA4-LIN-C-01)",
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
