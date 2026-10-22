@@ -2,7 +2,7 @@ import type { AttemptRecord, EvaluationResult, Intervention, Point, Question, Tr
 import { evaluate } from '@/lib/scoring/evaluate'
 import { balanceOf, purchase, rewardForCheckIn, rewardForCheckpoint, rewardsForAttempt, makeId } from '@/lib/rewards/economy'
 import { itemById } from '@/data/curriculum/shop'
-import { CREATIVE_LOOKS, CREATIVE_TOP_STUDENT, CREATIVE_TOP_XP } from '@/data/demo/creative'
+import { CREATIVE_LOOKS, CREATIVE_TOP_STUDENT, CREATIVE_TOP_XP, withCreativeXp } from '@/data/demo/creative'
 import { getState, nowIso, todayKey, update } from './store'
 import type { AppState } from './store'
 import type { CharacterId, EconomyConfig, Equipped, LessonPosition, MarkRecord, Role } from '@/types'
@@ -43,7 +43,10 @@ export function setStudentName(studentId: string, raw: string, creative?: boolea
       next = {
         ...next,
         appearance: { ...next.appearance, ...CREATIVE_LOOKS },
-        transactions: hasXp ? next.transactions : [...next.transactions, { id: makeId('tx'), studentId: CREATIVE_TOP_STUDENT, type: 'XP', amount: CREATIVE_TOP_XP, reason: 'Creative mode showcase', key: 'XP:creative-showcase', at: nowIso() }],
+        transactions: withCreativeXp(
+          hasXp ? next.transactions : [...next.transactions, { id: makeId('tx'), studentId: CREATIVE_TOP_STUDENT, type: 'XP', amount: CREATIVE_TOP_XP, reason: 'Creative mode showcase', key: 'XP:creative-showcase', at: nowIso() }],
+          nowIso(),
+        ),
       }
     }
     return next

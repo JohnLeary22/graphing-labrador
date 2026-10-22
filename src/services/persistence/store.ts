@@ -3,6 +3,7 @@ import type { AttemptRecord, CharacterId, EconomyConfig, Equipped, Intervention,
 import { DEFAULT_ECONOMY, makeId } from '@/lib/rewards/economy'
 import { buildSeed, DEMO_STUDENT_ID, DEMO_STUDENTS, SEED_VERSION, STARTER_CHARACTER } from '@/data/demo/seed'
 import { REMOVED_ITEM_PRICES } from '@/data/curriculum/shop'
+import { withCreativeXp } from '@/data/demo/creative'
 
 /**
  * Demo data adapter: state lives in this browser only (localStorage). It is NOT shared between users or devices.
@@ -92,7 +93,7 @@ function migrate(p: AppState): AppState {
     }
   }
   const appearance = Object.fromEntries(Object.entries(p.appearance).map(([sid, a]) => [sid, Object.fromEntries(Object.entries(a).filter(([k]) => k !== 'colour'))])) as AppState['appearance']
-  return { ...p, economy, students, attempts, transactions, marks, inventory, appearance, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false, creativeMode: p.creativeMode ?? false }
+  return { ...p, economy, students, attempts, transactions: p.creativeMode ? withCreativeXp(transactions, nowIso()) : transactions, marks, inventory, appearance, lessonState: p.lessonState ?? {}, seedVersion: SEED_VERSION, nameChosen: p.nameChosen ?? false, creativeMode: p.creativeMode ?? false }
 }
 
 function load(): AppState {

@@ -8,7 +8,8 @@ import { QuestionCard } from '@/components/assessments/QuestionCard'
 import { getState, resetDemo } from '@/services/persistence/store'
 import { buyItem, coinsFor, setStudentName, signIn } from '@/services/persistence/actions'
 import { DEMO_STUDENT_ID } from '@/data/demo/seed'
-import { CREATIVE_LOOKS } from '@/data/demo/creative'
+import { CREATIVE_LOOKS, lookScore } from '@/data/demo/creative'
+import { balanceOf } from '@/lib/rewards/economy'
 import { SHOP_ITEMS } from '@/data/curriculum/shop'
 import { questionById } from '@/data/lessons/gradient'
 
@@ -103,6 +104,29 @@ describe('Creative mode classmates', () => {
     expect(first.textContent).toContain('Noah')
     expect(first.textContent).toMatch(/4\d{3} XP/)
     expect(getState().appearance.s6.character).toBe('curve')
+  })
+  it('spreads classmates XP by cosmetic rarity: 2000-3000 for second place down to exactly 200', () => {
+    setStudentName(S, 'Alex', true)
+    const xp = (id: string) => balanceOf(getState().transactions, id, 'XP')
+    const classmates = Object.keys(CREATIVE_LOOKS).filter((id) => id !== 's6')
+    const ranked = [...classmates].sort((a, b) => xp(b) - xp(a))
+    expect(xp(ranked[0])).toBeGreaterThanOrEqual(2000)
+    expect(xp(ranked[0])).toBeLessThanOrEqual(3000)
+    expect(xp(ranked[ranked.length - 1])).toBe(200)
+    // Rarer outfits always earn more XP than less rare ones.
+    for (let i = 1; i < ranked.length; i++) {
+      expect(xp(ranked[i - 1])).toBeGreaterThan(xp(ranked[i]))
+      expect(lookScore(CREATIVE_LOOKS[ranked[i - 1]])).toBeGreaterThan(lookScore(CREATIVE_LOOKS[ranked[i]]))
+    }
+    // Kirby is first, and the drop to second is no longer a huge jump.
+    expect(xp('s6')).toBeGreaterThan(xp(ranked[0]))
+    expect(xp('s6') - xp(ranked[0])).toBeLessThanOrEqual(2500)
+  })
+  it('applying the XP again does not add any more', () => {
+    setStudentName(S, 'Alex', true)
+    const before = getState().transactions.length
+    setStudentName(S, 'Alex', true)
+    expect(getState().transactions.length).toBe(before)
   })
   it('does not apply showcase looks in normal mode', () => {
     setStudentName(S, 'Alex', false)

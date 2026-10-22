@@ -1,4 +1,6 @@
-import type { CharacterId, Equipped } from '@/types'
+import type { CharacterId, Equipped, Transaction } from '@/types'
+import { itemById } from '@/data/curriculum/shop'
+import { balanceOf, makeId } from '@/lib/rewards/economy'
 
 /**
  * Creative mode (EDUC2151 workshop only): the fictional classmates each get their own character and look,
@@ -20,3 +22,37 @@ export const CREATIVE_LOOKS: Record<string, Equipped & { character: CharacterId 
 /** The classmate shown as Kirby with all four legendary items. */
 export const CREATIVE_TOP_STUDENT = 's6'
 export const CREATIVE_TOP_XP = 4800
+
+const RARITY_WEIGHT: Record<string, number> = { common: 1, uncommon: 2, rare: 3, epic: 4, legendary: 10 }
+
+/** Total rarity of the four items a classmate wears. */
+export function lookScore(look: Equipped): number {
+  return [look.hat, look.neckwear, look.eyewear, look.background].reduce((sum, id) => sum + (RARITY_WEIGHT[itemById(id ?? '')?.rarity ?? ''] ?? 0), 0)
+}
+
+export const CREATIVE_XP_SECOND = 2800
+export const CREATIVE_XP_LOWEST = 200
+
+/**
+ * Target XP for each classmate other than the top one: rarer looks get more XP, spread evenly
+ * from 2800 for the second place down to 200 for the lowest.
+ */
+export function creativeXpTargets(): Record<string, number> {
+  const ranked = Object.entries(CREATIVE_LOOKS)
+    .filter(([id]) => id !== CREATIVE_TOP_STUDENT)
+    .sort((a, b) => lookScore(b[1]) - lookScore(a[1]))
+  const step = (CREATIVE_XP_SECOND - CREATIVE_XP_LOWEST) / (ranked.length - 1)
+  return Object.fromEntries(ranked.map(([id], i) => [id, Math.round((CREATIVE_XP_SECOND - i * step) / 10) * 10]))
+}
+
+/** Adds the transactions that bring each classmate up to their target XP. Safe to run more than once. */
+export function withCreativeXp(txs: Transaction[], at: string): Transaction[] {
+  const out = [...txs]
+  for (const [id, target] of Object.entries(creativeXpTargets())) {
+    const key = `XP:creative-xp:${id}`
+    if (out.some((t) => t.key === key)) continue
+    const current = balanceOf(out, id, 'XP')
+    if (target > current) out.push({ id: makeId('tx'), studentId: id, type: 'XP', amount: target - current, reason: 'Creative mode showcase', key, at })
+  }
+  return out
+}

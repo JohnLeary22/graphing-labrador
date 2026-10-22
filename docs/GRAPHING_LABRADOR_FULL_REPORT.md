@@ -641,6 +641,6 @@ When ticked:
 
 - The coin balance shows an infinity symbol everywhere it is displayed (sidebar, dashboard, shop, My Progress). Coin gains still appear as before (for example "+10 coins" after a correct answer) and are still recorded; only the balance is shown as infinite.
 - Every shop item can be bought. Nothing is deducted and nothing is unaffordable; an owned item still cannot be bought twice.
-- The nine fictional classmates each get their own character and look. Hector 3, Tex 2, Slobber 2, Axel 1 and Kirby 1, each with a different hat, neckwear, eyewear and background. One classmate (Noah) is Kirby, wears all four legendary items and has high XP, so he is first on the leaderboard.
+- The nine fictional classmates each get their own character and look. Hector 3, Tex 2, Slobber 2, Axel 1 and Kirby 1, each with a different hat, neckwear, eyewear and background. One classmate (Noah) is Kirby, wears all four legendary items and has 4,800 XP, so he is first on the leaderboard. The other classmates' XP follows how rare their outfits are: about 2,800 for second place, then 2,430, 2,060, 1,690, 1,310, 940 and 570, down to 200 for the lowest.
 
 When not ticked, behaviour is exactly as before. Source: `src/pages/student/NamePrompt.tsx`, `src/data/demo/creative.ts`, `setStudentName` and `buyItem` in `src/services/persistence/actions.ts`. Tests: `tests/unit/creative.test.tsx`.
